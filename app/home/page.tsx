@@ -2,15 +2,15 @@ import Navbar from "../../components/navbar"
 
 export default function HomePage() {
 
-  const tips = [
-    "Use UPI apps like PhonePe or Google Pay to send money instantly.",
-    "Water plants early in the morning to reduce evaporation and improve crop health.",
-    "Never share your OTP with anyone, even if they claim to be from the bank.",
-    "Saving a small amount every week can help build long-term financial security.",
-    "Learning basic smartphone skills can open many new job opportunities."
-  ]
+ const tips = [
+  "Use UPI apps like PhonePe or Google Pay to send money instantly.",
+  "Water plants early in the morning to improve crop health.",
+  "Never share your OTP with anyone, even if they claim to be from the bank.",
+  "Saving a small amount every week builds long-term financial security.",
+  "Learning basic smartphone skills can open new job opportunities."
+]
 
-  const todayTip = tips[new Date().getDate() % tips.length]
+const todayTip = tips[new Date().getDate() % tips.length]
 
   return (
     <>
@@ -20,6 +20,10 @@ export default function HomePage() {
 
       {/* HERO SECTION */}
       <section className="bg-linear-to-r from-red-600 to-indigo-700 text-white py-20 px-6 text-center">
+
+        {/* SMALL DAILY TIP BOX */}
+
+
 
         <h1 className="text-7xl font-bold">GramAI🌾</h1>
         <br />
@@ -34,6 +38,15 @@ export default function HomePage() {
           Try Demo
         </button>
         </a>
+      <br />
+      <br />
+          {/* SMALL DAILY TIP BOX */}
+  <div className="mb-6 flex justify-center">
+    <div className="bg-white text-black text-sm px-4 py-2 rounded-full shadow-md max-w-md">
+      🌱 Tip from GramAI: {todayTip}
+    </div>
+  </div>
+
 
       </section>
 

@@ -5,6 +5,25 @@ import Navbar from "../../components/navbar"
 import html2canvas from "html2canvas"
 import { useRef } from "react"
 
+function saveCertificate(courseName: string) {
+
+const storedUser = localStorage.getItem("currentUser")
+const user = storedUser ? JSON.parse(storedUser) : null
+
+if (!user) return
+
+const certificates = JSON.parse(localStorage.getItem("certificates") || "{}")
+
+if (!certificates[user.email]) {
+certificates[user.email] = []
+}
+
+certificates[user.email].push(courseName)
+
+localStorage.setItem("certificates", JSON.stringify(certificates))
+
+}
+
 type Question = {
   question: string
   options: string[]
@@ -412,12 +431,15 @@ Date: {new Date().toLocaleDateString()}
 </div>
 
 </div>
-    <button
-      onClick={downloadCertificate}
-      className="mt-6 bg-linear-to-r from-red-600 to-indigo-700 text-white px-6 py-3 rounded"
-    >
-      Download Certificate
-    </button>
+<button
+  onClick={() => {
+    downloadCertificate()
+    saveCertificate("Digital Skills Course")
+  }}
+  className="mt-6 bg-linear-to-r from-red-600 to-indigo-700 text-white px-6 py-3 rounded"
+>
+  Download Certificate
+</button>
   </>
 ) : (
   <p className="text-red-600 text-xl">

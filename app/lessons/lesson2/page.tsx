@@ -5,6 +5,27 @@ import Navbar from "../../../components/navbar"
 import Link from "next/link"
 import ProgressBar from "../../../components/progressbar"
 
+function saveProgress(lessonName: string){
+
+const storedUser = localStorage.getItem("currentUser")
+const user = storedUser ? JSON.parse(storedUser) : null
+
+if(!user) return
+
+const progress = JSON.parse(localStorage.getItem("progress") || "{}")
+
+if(!progress[user.email]){
+progress[user.email] = []
+}
+
+if(!progress[user.email].includes(lessonName)){
+progress[user.email].push(lessonName)
+}
+
+localStorage.setItem("progress", JSON.stringify(progress))
+
+}
+
 export default function Lesson2() {
 
   const [lang, setLang] = useState<"en" | "ta">("en")
@@ -88,7 +109,9 @@ export default function Lesson2() {
           </Link>
 
           <Link href="/lessons/lesson3">
-            <button className="bg-linear-to-r from-red-600 to-indigo-700 text-white px-6 py-2 rounded">
+            <button className="bg-linear-to-r from-red-600 to-indigo-700 text-white px-6 py-2 rounded" onClick={()=>{
+saveProgress("lesson2")
+}}>
               Next Lesson
             </button>
           </Link>
