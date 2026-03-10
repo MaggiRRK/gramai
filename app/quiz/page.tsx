@@ -31,6 +31,7 @@ type Question = {
 }
 
 const quizData = {
+
   en: [
     {
       question: "What is the primary role of the GramAI 'Daily Digital Assistant'?",
@@ -216,239 +217,187 @@ const quizData = {
       answer: 1,
     },
   ],
+
+  hi: [
+    {
+      question: "GramAI 'डेली डिजिटल असिस्टेंट' की मुख्य भूमिका क्या है?",
+      options: [
+        "किसान के पारंपरिक ज्ञान को बदलना",
+        "डेटा आधारित सलाह देने वाला सहायक बनना",
+        "सभी खेत कार्यों को स्वचालित करना",
+      ],
+      answer: 1,
+    },
+    {
+      question: "सुबह 7:00 बजे का संदेश क्यों उपयोगी है?",
+      options: [
+        "5G इंटरनेट जरूरी है",
+        "सामान्य मोबाइल नेटवर्क से संदेश आता है",
+        "कंप्यूटर केंद्र जाना पड़ता है",
+      ],
+      answer: 1,
+    },
+    {
+      question: "सैटेलाइट क्या जल्दी पहचान सकता है?",
+      options: [
+        "भविष्य के बाजार भाव",
+        "फसल पर शुरुआती तनाव",
+        "व्यापारियों का आगमन",
+      ],
+      answer: 1,
+    },
+    {
+      question: "सिंचाई छोड़ने की सलाह क्यों मिल सकती है?",
+      options: [
+        "सिस्टम खराब है",
+        "मिट्टी में पर्याप्त नमी या बारिश आने वाली है",
+        "पानी का उपयोग मना है",
+      ],
+      answer: 1,
+    },
+    {
+      question: "कीटनाशक सुबह 9:30 से पहले क्यों छिड़कना चाहिए?",
+      options: [
+        "अंधेरे में ही काम करता है",
+        "हवा कम और तापमान कम होता है",
+        "कीड़े सो रहे होते हैं",
+      ],
+      answer: 1,
+    }
+  ]
+
 }
 
 export default function QuizPage() {
-  const [language, setLanguage] = useState<"en" | "ta">("en")
-  const [current, setCurrent] = useState(0)
-  const [score, setScore] = useState(0)
-  const [finished, setFinished] = useState(false)
 
-  const certificateRef = useRef<HTMLDivElement>(null)
+const [language,setLanguage] = useState<"en"|"ta"|"hi">("en")
+const [current,setCurrent] = useState(0)
+const [score,setScore] = useState(0)
+const [finished,setFinished] = useState(false)
 
-  const questions = quizData[language]
+const certificateRef = useRef<HTMLDivElement>(null)
 
-  const answerQuestion = (index: number) => {
-    if (index === questions[current].answer) {
-      setScore(score + 1)
-    }
+const questions = quizData[language]
 
-    if (current + 1 < questions.length) {
-      setCurrent(current + 1)
-    } else {
-      setFinished(true)
-    }
-  }
-  
-  const downloadCertificate = async () => {
-  if (!certificateRef.current) return
+const answerQuestion = (index:number)=>{
 
-  const canvas = await html2canvas(certificateRef.current)
-  const link = document.createElement("a")
-
-  link.download = "GramAI-Certificate.png"
-  link.href = canvas.toDataURL()
-  link.click()
+if(index===questions[current].answer){
+setScore(score+1)
 }
 
-  const percentage = Math.round((score / questions.length) * 100)
+if(current+1<questions.length){
+setCurrent(current+1)
+}else{
+setFinished(true)
+}
 
-  return (
-    <>
-      <Navbar />
+}
 
-      <main className="p-10 max-w-2xl mx-auto">
+const downloadCertificate = async ()=>{
 
-        <div className="mb-6 flex gap-4">
-          <button
-            onClick={() => setLanguage("en")}
-            className="px-4 py-2 bg-gray-700 text-white rounded"
-          >
-            English
-          </button>
+if(!certificateRef.current) return
 
-          <button
-            onClick={() => setLanguage("ta")}
-            className="px-4 py-2 bg-gray-700 text-white rounded"
-          >
-           Tamil தமிழ்
-          </button>
-        </div>
+const canvas = await html2canvas(certificateRef.current)
+const link=document.createElement("a")
 
-        {!finished ? (
-          <>
-            <h1 className="text-3xl font-bold mb-6">
-              GramAI Quiz
-            </h1>
+link.download="GramAI-Certificate.png"
+link.href=canvas.toDataURL()
+link.click()
 
-            <p className="text-xl mb-6">
-              {questions[current].question}
-            </p>
+}
 
-            <div className="space-y-3">
-              {questions[current].options.map((opt, i) => (
-                <button
-                  key={i}
-                  onClick={() => answerQuestion(i)}
-                  className="block w-full bg-red-500 text-white px-4 py-3 rounded"
-                >
-                  {opt}
-                </button>
-              ))}
-            </div>
+const percentage = Math.round((score/questions.length)*100)
 
-            <p className="mt-6 text-gray-500">
-              Question {current + 1} / {questions.length}
-            </p>
-          </>
-        ) : (
-          <div className="text-center">
+return(
 
-            <h1 className="text-4xl font-bold mb-6">
-              Quiz Complete
-            </h1>
+<>
+<Navbar/>
 
-            <p className="text-xl mb-4">
-              Score: {score} / {questions.length}
-            </p>
+<main className="p-10 max-w-2xl mx-auto">
 
-            <p className="text-xl mb-6">
-              Percentage: {percentage}%
-            </p>
+<div className="mb-6 flex gap-4">
 
-{percentage >= 40 ? (
-  <>
- <div
-  ref={certificateRef}
-  className="bg-white p-16 text-center"
-  style={{
-    maxWidth: "950px",
-    margin: "0 auto",
-    border: "8px solid #2e7d32",
-    borderRadius: "8px",
-    color: "#000"
-  }}
+<button
+onClick={()=>setLanguage("en")}
+className="px-4 py-2 bg-gray-700 text-white rounded"
 >
+English
+</button>
 
-<div style={{marginBottom:"30px"}}>
+<button
+onClick={()=>setLanguage("ta")}
+className="px-4 py-2 bg-gray-700 text-white rounded"
+>
+Tamil தமிழ்
+</button>
 
-<h1 style={{
-fontSize:"42px",
-fontWeight:"bold",
-color:"#2e7d32",
-display:"flex",
-justifyContent:"center",
-alignItems:"center",
-gap:"12px"
-}}>
-🌾 GramAI
+<button
+onClick={()=>setLanguage("hi")}
+className="px-4 py-2 bg-gray-700 text-white rounded"
+>
+Hindi हिंदी
+</button>
+
+</div>
+
+{!finished ?(
+
+<>
+
+<h1 className="text-3xl font-bold mb-6">
+GramAI Quiz
 </h1>
 
-<p style={{
-fontSize:"16px",
-marginTop:"5px"
-}}>
-AI Powered Farming Assistant
+<p className="text-xl mb-6">
+{questions[current].question}
 </p>
 
-</div>
+<div className="space-y-3">
 
+{questions[current].options.map((opt,i)=>(
 
-<h2 style={{
-fontSize:"36px",
-fontWeight:"bold",
-marginBottom:"35px"
-}}>
-Certificate of Completion
-</h2>
-
-
-<p style={{
-fontSize:"20px",
-marginBottom:"15px"
-}}>
-This certificate is proudly presented to
-</p>
-
-
-<h3 style={{
-fontSize:"30px",
-fontWeight:"bold",
-marginBottom:"25px",
-borderBottom:"2px solid #ccc",
-display:"inline-block",
-paddingBottom:"5px",
-minWidth:"300px"
-}}>
-Farmer Participant
-</h3>
-
-
-<p style={{
-fontSize:"20px",
-marginTop:"20px",
-marginBottom:"15px"
-}}>
-for successfully completing the course
-</p>
-
-
-<h3 style={{
-fontSize:"32px",
-fontWeight:"bold",
-color:"#2e7d32",
-marginBottom:"25px"
-}}>
-GramAI Smart Farming Basics
-</h3>
-
-
-<p style={{
-fontSize:"20px"
-}}>
-Final Score: <strong>{percentage}%</strong>
-</p>
-
-
-<div style={{
-display:"flex",
-justifyContent:"space-between",
-marginTop:"60px"
-}}>
-
-<div style={{textAlign:"center"}}>
-<p style={{borderTop:"1px solid black",width:"200px",margin:"0 auto"}}></p>
-<p style={{marginTop:"8px"}}>GramAI Learning Team</p>
-</div>
-
-<div style={{textAlign:"center"}}>
-<p style={{borderTop:"1px solid black",width:"200px",margin:"0 auto"}}></p>
-<p style={{marginTop:"8px"}}>
-Date: {new Date().toLocaleDateString()}
-</p>
-</div>
-
-</div>
-
-</div>
 <button
-  onClick={() => {
-    downloadCertificate()
-    saveCertificate("Digital Skills Course")
-  }}
-  className="mt-6 bg-linear-to-r from-red-600 to-indigo-700 text-white px-6 py-3 rounded"
+key={i}
+onClick={()=>answerQuestion(i)}
+className="block w-full bg-red-500 text-white px-4 py-3 rounded"
 >
-  Download Certificate
+{opt}
 </button>
-  </>
-) : (
-  <p className="text-red-600 text-xl">
-    Score below 40%. Please try again.
-  </p>
+
+))}
+
+</div>
+
+<p className="mt-6 text-gray-500">
+Question {current+1} / {questions.length}
+</p>
+
+</>
+
+):(  
+
+<div className="text-center">
+
+<h1 className="text-4xl font-bold mb-6">
+Quiz Complete
+</h1>
+
+<p className="text-xl mb-4">
+Score: {score} / {questions.length}
+</p>
+
+<p className="text-xl mb-6">
+Percentage: {percentage}%
+</p>
+
+</div>
+
 )}
-          </div>
-        )}
-      </main>
-    </>
-  )
+
+</main>
+
+</>
+
+)
+
 }

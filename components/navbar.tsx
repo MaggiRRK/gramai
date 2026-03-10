@@ -55,7 +55,7 @@ Dashboard
 </span>
 
 <button
-className="bg-white text-black px-3 py-1 rounded hover:bg-gray-200"
+className=" text-white px-3 py-1 rounded"
 onClick={()=>{
 localStorage.removeItem("currentUser")
 location.reload()
