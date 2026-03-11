@@ -5,6 +5,23 @@ import AuthModal from "./AuthModal"
 
 export default function Navbar() {
 
+const [online, setOnline] = useState(true)
+
+useEffect(() => {
+  const updateStatus = () => setOnline(navigator.onLine)
+
+  window.addEventListener("online", updateStatus)
+  window.addEventListener("offline", updateStatus)
+
+  updateStatus()
+
+  return () => {
+    window.removeEventListener("online", updateStatus)
+    window.removeEventListener("offline", updateStatus)
+  }
+}, [])
+
+
 const [openAuth,setOpenAuth] = useState(false)
 const [user,setUser] = useState<any>(null)
 const [loaded,setLoaded] = useState(false)
@@ -31,6 +48,10 @@ return (
 
 <div className="flex items-center gap-4 text-base">
 
+<p className={`text-sm ${online ? "text-green-400" : "text-red-400"}`}>
+  {online ? "🟢 Online" : "🔴 Offline"}
+</p>
+
 <a href="/home" className="hover:text-gray-300 transition">
 Home
 </a>
@@ -46,6 +67,7 @@ AskAI <span className="text-red-400">❓</span>
 <a href="/dashboard" className="hover:text-gray-300 transition">
 Dashboard
 </a>
+
 
 {user ? (
 

@@ -126,6 +126,11 @@ export default function HomePage() {
   const content = translations[lang as keyof typeof translations];
   const todayTip = content.tips[new Date().getDate() % content.tips.length];
 
+<head>
+  <title>GramAI - Empowering Rural India with AI-Powered Learning</title>
+  <meta name="description" content="GramAI is an AI-powered offline micro-learning platform designed to make digital skills accessible to rural communities across India. Our mission is to empower millions with essential digital literacy and job-ready skills through short, voice-based lessons in regional languages." />
+</head>
+
   return (
     <>
       <Navbar />
